@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils/cn';
 import Link from 'next/link';
+import Button from '@/components/Button';
 
 const Home = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -59,28 +60,20 @@ const Home = () => {
       console.error('Error starting recording: ' + err.message);
     }
   };
-  
+
   return (
     <div className='h-screen w-full grid place-items-center'>
       <div className="flex flex-col items-center gap-6">
         {(isPreviewVisible && recordedVideoURL) ? (
-          <Link
-            href={'/editing?video=' + recordedVideoURL.split(window.location.href)[1]}
-            className='px-5 py-2 bg-green-600 rounded-lg cursor-pointer'
-          >
-            Start Editing
+          <Link href={'/editing?video=' + recordedVideoURL.split(window.location.href)[1]}>
+            <Button>Start Editing</Button>
           </Link>
-        ) : (<motion.button
-          className={cn(
-            'px-5 py-2 rounded-lg cursor-pointer',
-            isRecording ? 'bg-orange-600' : 'bg-green-600'
-          )}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 1 }}
+        ) : (<Button
+          className={isRecording ? 'bg-orange-600' : 'bg-green-600'}
           onClick={handleStartRecording}
         >
           {isRecording ? 'Stop Recording' : 'Start Recording'}
-        </motion.button>)}
+        </Button>)}
 
         {isPreviewVisible && recordedVideoURL && (
           <div className="mt-4 flex flex-col items-center">
