@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils/cn';
+import Link from 'next/link';
 
 const Home = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -38,6 +39,7 @@ const Home = () => {
       mediaRecorder.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
+
         setRecordedVideoURL(url);
         setIsPreviewVisible(true);
 
@@ -57,11 +59,18 @@ const Home = () => {
       console.error('Error starting recording: ' + err.message);
     }
   };
-
+  
   return (
     <div className='h-screen w-full grid place-items-center'>
       <div className="flex flex-col items-center gap-6">
-        <motion.button
+        {(isPreviewVisible && recordedVideoURL) ? (
+          <Link
+            href={'/editing?video=' + recordedVideoURL.split(window.location.href)[1]}
+            className='px-5 py-2 bg-green-600 rounded-lg cursor-pointer'
+          >
+            Start Editing
+          </Link>
+        ) : (<motion.button
           className={cn(
             'px-5 py-2 rounded-lg cursor-pointer',
             isRecording ? 'bg-orange-600' : 'bg-green-600'
@@ -71,7 +80,8 @@ const Home = () => {
           onClick={handleStartRecording}
         >
           {isRecording ? 'Stop Recording' : 'Start Recording'}
-        </motion.button>
+        </motion.button>)}
+
         {isPreviewVisible && recordedVideoURL && (
           <div className="mt-4 flex flex-col items-center">
             <span className="mb-2 text-lg font-semibold">Recording Preview:</span>
@@ -83,7 +93,7 @@ const Home = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   )
 }
 
