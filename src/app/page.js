@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils/cn';
 import Link from 'next/link';
-import Button from '@/components/Button';
+import Button from '@/lib/ui/Button';
 
 const Home = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -65,7 +65,7 @@ const Home = () => {
     <div className='h-screen w-full grid place-items-center'>
       <div className="flex flex-col items-center gap-6">
         {(isPreviewVisible && recordedVideoURL) ? (
-          <Link href={'/editing?video=' + recordedVideoURL.split(window.location.href)[1]}>
+          <Link href={'/editing?video=' + recordedVideoURL}>
             <Button>Start Editing</Button>
           </Link>
         ) : (<Button
